@@ -1,6 +1,6 @@
 # Lumpy-Skin-Disease
 
-Run predict_disease.py
+Run main.py
 
 Use this link to download all the trained models from the Zip File :
 https://drive.google.com/file/d/1frW0QUlMdcvMbn_mqHYsS2mkk02yYXPf/view?usp=sharing
