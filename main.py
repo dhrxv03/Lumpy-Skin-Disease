@@ -3,6 +3,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['PYTHONWARNINGS'] = 'ignore'
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -20,23 +21,27 @@ logs_dir = './Logs'
 model_path = './trained_models/densenet_lumpy_skin.h5'
 input_size = (224, 224)
 
-# Function to ensure directory exists
+# Function to ensure directory and file existence
 def ensure_dir(directory):
-    os.makedirs(directory, exist_ok=True)  # Simplified directory creation
+    os.makedirs(directory, exist_ok=True)
 
-# Ensure Logs directory exists
+def check_file_exists(file_path):
+    if not os.path.isfile(file_path):
+        raise FileNotFoundError(f"File {file_path} does not exist")
+
+# Ensure directories and files exist
 ensure_dir(logs_dir)
+check_file_exists(model_path)
+check_file_exists(image_path)
 
 # Load DenseNet model
-if not os.path.isfile(model_path):
-    raise FileNotFoundError(f"Model file {model_path} does not exist")
 model = load_model(model_path)
 
 # Predict function using DenseNet
 def predict_with_densenet(image_path, model):
     # Load and preprocess the image
     img = load_img(image_path, target_size=input_size)
-    img_array = img_to_array(img) / 255.0  # Rescale the image directly
+    img_array = img_to_array(img) / 255.0  # Rescale the image
     img_array = np.expand_dims(img_array, axis=0)  # Expand dimensions for the model
 
     # Make prediction
@@ -56,8 +61,7 @@ plt.xlabel('Model Name')
 plt.ylabel('Prediction Percentage')
 plt.title('DenseNet Prediction for Lumpy Skin Disease')
 plt.ylim([0, 110])
-plt.yticks(np.arange(0, 101, 10))
-plt.text("DenseNet", prediction + 1, f'{prediction:.2f}%', ha='center', va='bottom')
+plt.text("DenseNet", prediction + 1, f'{prediction:.2f}%', ha='center')
 
 # Save the results
 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -70,5 +74,7 @@ plt.close()
 # Save prediction results to CSV
 df = pd.DataFrame([["DenseNet", prediction]], columns=['Model Name', 'Prediction Percentage'])
 df.to_csv(csv_path, index=False)
+
+# Display save paths
 print(f"Bar graph saved to {png_path}")
 print(f"CSV file saved to {csv_path}")
