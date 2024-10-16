@@ -13,8 +13,11 @@ behavior_features = behavior_data.drop('Label', axis=1)
 behavior_labels = behavior_data['Label'].map({'healthy': 0, 'infected': 1})  # Convert labels to 0 and 1
 
 # One-Hot Encode categorical variables
-encoder = OneHotEncoder()
-behavior_features_encoded = encoder.fit_transform(behavior_features).toarray()
+encoder = OneHotEncoder(sparse_output=False)  # Use sparse_output instead of sparse
+behavior_features_encoded = encoder.fit_transform(behavior_features)
+
+# Display the shape of the encoded features
+print(f"Encoded feature shape: {behavior_features_encoded.shape}")
 
 # Split behavioral data into train and validation sets
 X_train_behavior, X_val_behavior, y_train_behavior, y_val_behavior = train_test_split(
@@ -28,7 +31,7 @@ X_val_behavior = scaler.transform(X_val_behavior)
 
 # Build the behavioral model
 model = Sequential()
-model.add(Dense(32, activation='relu', input_shape=(X_train_behavior.shape[1],)))
+model.add(Dense(32, activation='relu', input_shape=(X_train_behavior.shape[1],)))  # Updated to match the shape
 model.add(Dense(16, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))  # Binary output
 
