@@ -1,14 +1,20 @@
 import os
-import pandas as pd
-import numpy as np
-import gradio as gr
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
-
 # Set environment variables to suppress TensorFlow logs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['PYTHONWARNINGS'] = 'ignore'
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from datetime import datetime
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+import gradio as gr
+
+# Set TensorFlow logger to only show errors
+tf.get_logger().setLevel('ERROR')
 
 # Load the trained models
 densenet_model = load_model('./trained_models/densenet_lumpy_skin.h5')
