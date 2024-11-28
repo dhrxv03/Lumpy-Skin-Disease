@@ -13,7 +13,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import gradio as gr
 
-# Set TensorFlow logger to only show errors
+#suppress tensorflow errores
 tf.get_logger().setLevel('ERROR')
 
 # Load the trained models
@@ -42,13 +42,13 @@ def predict_with_densenet(image):
     return f"{result} {confidence}"
 
 
-# Gradio interface function
+#gradio
 def gradio_interface(image, appetite, movement, grazing, social, drinking, breathing, posture, skin, milk, temp):
     result = predict_with_densenet(image)
     return result
 
 
-# Define behavioral options
+#behavorial dataset features
 behavioral_options = {
     "Appetite": ["normal", "reduced"],
     "Movement": ["active", "lethargic"],
@@ -62,7 +62,7 @@ behavioral_options = {
     "Temp": ["normal", "fever"],
 }
 
-# Create Gradio interface
+#build gradio interface
 inputs = [
     gr.Image(type="pil", label="Upload an Image of a Cow"),
     *[gr.Radio(label=key, choices=value) for key, value in behavioral_options.items()]
@@ -76,6 +76,5 @@ interface = gr.Interface(
     description="Upload an image of a cow to predict whether it has Lumpy Skin Disease. "
 )
 
-# Launch the interface
 if __name__ == "__main__":
     interface.launch()
