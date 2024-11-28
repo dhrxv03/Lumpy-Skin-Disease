@@ -32,18 +32,17 @@ def preprocess_image(image):
     return img_array
 
 
-#Prediction function using DenseNet
 def predict_with_densenet(image):
     img_array = preprocess_image(image)
     prediction = densenet_model.predict(img_array)[0][0] * 100
-    result = "Lumpy Skin Disease" if prediction > 50 else "Healthy"
+    result = "Chances of the cow having Lumpy skin Disease" if prediction > 50 else "Chances of the cow having Lumpy skin Disease"
     confidence = f"{prediction:.2f}%"
 
     return f"{result} {confidence}"
 
 
 #gradio
-def gradio_interface(image, appetite, movement, grazing, social, drinking, breathing, posture, skin, milk, temp):
+def multi_model(image, appetite, movement, grazing, social, drinking, breathing, posture, skin, milk, temp):
     result = predict_with_densenet(image)
     return result
 
@@ -69,7 +68,7 @@ inputs = [
 ]
 
 interface = gr.Interface(
-    fn=gradio_interface,
+    fn=multi_model,
     inputs=inputs,
     outputs=gr.Textbox(lines=5, max_lines=10, label="Prediction Result"),
     title="Lumpy Skin Disease Detection",
