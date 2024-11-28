@@ -86,6 +86,8 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.DS_Store
+.venv/
 build/
 develop-eggs/
 dist/

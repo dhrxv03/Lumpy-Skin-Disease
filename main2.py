@@ -32,7 +32,7 @@ def preprocess_image(image):
     return img_array
 
 
-# Prediction function using DenseNet
+#Prediction function using DenseNet
 def predict_with_densenet(image):
     img_array = preprocess_image(image)
     prediction = densenet_model.predict(img_array)[0][0] * 100
